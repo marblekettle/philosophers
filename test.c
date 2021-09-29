@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/27 12:13:28 by bmans         #+#    #+#                 */
-/*   Updated: 2021/09/28 15:47:39 by bmans         ########   odam.nl         */
+/*   Updated: 2021/09/29 10:09:25 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
-
-unsigned char		g_busy = 0;
-pthread_mutex_t		g_mutex;
 
 typedef struct		s_beacon
 {
@@ -32,6 +29,8 @@ typedef	struct		s_monitor
 	unsigned int	n_beacons;
 	pthread_t		**beacon_thr;
 	pthread_t		monitor_thr;
+	unsigned char	busy;
+	pthread_mutex_t	mutex;
 }					t_monitor;
 
 int	waitup(void)
@@ -56,18 +55,14 @@ void	*beacon(void *beacon)
 	{
 		if (((t_beacon *)beacon)->state == 0)
 		{
-			pthread_mutex_lock(&g_mutex);
-			//pthread_mutex_lock(&(((t_monitor *)(((t_beacon *)beacon)->monitor))->mutex));
-			//((t_monitor *)(((t_beacon *)beacon)->monitor))->busy = 1;
-			g_busy = 1;
+			pthread_mutex_lock(&(((t_monitor *)(((t_beacon *)beacon)->monitor))->mutex));
+			((t_monitor *)(((t_beacon *)beacon)->monitor))->busy = 1;
 			((t_beacon *)beacon)->state = 1;
 			usleep(500000);
-			pthread_mutex_unlock(&g_mutex);
-			//pthread_mutex_unlock(&(((t_monitor *)(((t_beacon *)beacon)->monitor))->mutex));
+			pthread_mutex_unlock(&(((t_monitor *)(((t_beacon *)beacon)->monitor))->mutex));
 			((t_beacon *)beacon)->num++;
-			g_busy = 0;
 			((t_beacon *)beacon)->state = 0;
-			//((t_monitor *)(((t_beacon *)beacon)->monitor))->busy = 0;
+			((t_monitor *)(((t_beacon *)beacon)->monitor))->busy = 0;
 		}
 		usleep(300000);
 	}
@@ -99,6 +94,7 @@ void	init_monitor(t_monitor *moni, unsigned int n)
 	unsigned int	i;
 
 	moni->n_beacons = n;
+	moni->busy = 0;
 	moni->beacon = malloc(sizeof(t_beacon *) * n);
 	moni->beacon_thr = malloc(sizeof(pthread_t *) * n);
 	i = 0;
@@ -120,7 +116,7 @@ int	main(void)
 	unsigned int	i;
 	init_monitor(&moni, 3);
 	i = 0;
-	pthread_mutex_init(&g_mutex, NULL);
+	pthread_mutex_init(&moni.mutex, NULL);
 	pthread_create(&(moni.monitor_thr), NULL, monitor, &moni);
 	while (i < moni.n_beacons)
 	{
