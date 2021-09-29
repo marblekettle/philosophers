@@ -6,16 +6,17 @@
 #    By: bmans <marvin@codam.nl>                      +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/09/23 16:09:13 by bmans         #+#    #+#                  #
-#    Updated: 2021/09/27 12:15:44 by bmans         ########   odam.nl          #
+#    Updated: 2021/09/29 14:15:04 by bmans         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-SRC = test.c
+SRC = philo.c aux.c
+HEADER = philo.h
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g
 
-$(NAME): $(SRC)
+$(NAME): $(SRC) $(HEADER)
 	$(CC) $(FLAGS) $(SRC) -o $(NAME)
 
 all: $(NAME)

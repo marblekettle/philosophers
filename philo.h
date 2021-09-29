@@ -6,19 +6,22 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/09/29 12:17:02 by bmans         ########   odam.nl         */
+/*   Updated: 2021/09/29 14:10:29 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+# ifndef UINT
+#  define UINT unsigned int
+# endif
 # include <pthread.h>
 
 typedef enum e_state
 {
-	SLEEP,
 	THINK,
 	EAT,
+	SLEEP,
 	DEAD
 }	t_state;
 
@@ -48,6 +51,6 @@ void	*philosopher(void *philo);
 void	*monitor(void *monit);
 
 char	is_numeric(const char *str);
-UINT	ft_atoui(const char *str);
+UINT	atoui(const char *str);
 
 #endif

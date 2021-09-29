@@ -6,13 +6,13 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:59:12 by bmans         #+#    #+#                 */
-/*   Updated: 2021/09/29 12:15:17 by bmans         ########   odam.nl         */
+/*   Updated: 2021/09/29 14:17:47 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 static char	is_num(const char c)
 {
-	return (str[i] >= '0' || str[i] <= '9');
+	return (c >= '0' && c <= '9');
 }
 
 char	is_numeric(const char *str)
@@ -29,7 +29,7 @@ char	is_numeric(const char *str)
 	return (1);
 }
 
-unsigned int	ft_atoui(const char *str)
+unsigned int	atoui(const char *str)
 {
 	unsigned int	out;
 	unsigned short	i;
@@ -44,6 +44,7 @@ unsigned int	ft_atoui(const char *str)
 			break ;
 		out *= 10;
 		out += str[i] - '0';
+		i++;
 	}
 	return (out);
 }
