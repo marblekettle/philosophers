@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:49:54 by bmans         #+#    #+#                 */
-/*   Updated: 2021/09/29 14:13:04 by bmans         ########   odam.nl         */
+/*   Updated: 2021/10/11 13:21:37 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	cleanup_monit(t_monit *monit)
+static void	cleanup_monit(t_monit *monit)
 {
 	UINT	i;
 
@@ -33,7 +33,22 @@ void	cleanup_monit(t_monit *monit)
 	}
 }
 
-void	init_monit(t_monit *monit, char **args)
+static void	start_threads(t_monit *monit)
+{
+	UINT i;
+
+	i = monit->n_philo;
+	pthread_create(&(monit->monit_thr), NULL, monitor, monit);
+	while (i > 0)
+	{
+		i--;
+		pthread_create(&(monit->philo[i]->philo_thr), \
+			NULL, philosopher, monit->philo[i]);
+	}
+	pthread_join(monit->monit_thr, NULL);
+}
+
+static void	init_monit(t_monit *monit, char **args)
 {
 	UINT	i;
 
@@ -52,9 +67,11 @@ void	init_monit(t_monit *monit, char **args)
 			return ;
 		memset(monit->philo[i], 0, sizeof(t_philo));
 		monit->philo[i]->monit = monit;
+		monit->philo[i]->id = i;
 		pthread_mutex_init(&(monit->philo[i]->mutex), NULL);
 		i++;
 	}
+	start_threads(monit);
 }
 
 int	main(int ac, char **av)

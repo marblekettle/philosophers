@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/09/29 14:10:29 by bmans         ########   odam.nl         */
+/*   Updated: 2021/10/11 13:17:58 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef enum e_state
 typedef struct s_philo
 {
 	pthread_t		philo_thr;
+	UINT			id;
 	t_state			state;
 	unsigned char	fork;
 	pthread_mutex_t	mutex;
