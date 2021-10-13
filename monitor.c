@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:53:37 by bmans         #+#    #+#                 */
-/*   Updated: 2021/10/11 13:28:08 by bmans         ########   odam.nl         */
+/*   Updated: 2021/10/11 13:30:40 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	*monitor(void *monit)
 {
-	t_monit *mo;
+	t_monit	*mo;
 	UINT	i;
 
 	mo = (t_monit *)monit;
