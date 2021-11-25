@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:56:02 by bmans         #+#    #+#                 */
-/*   Updated: 2021/10/13 10:12:37 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/25 14:41:52 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ static void	grab_forks(t_philo *philo)
 	{
 		pthread_mutex_lock(&(philo->monit->philo[next]->mutex));
 		philo->monit->philo[next]->fork = 1;
-		printf("%i takes fork %i\n", philo->id, next);
+		printf("%u %i takes fork %i\n", philo->monit->time, philo->id, next);
 	}
 	pthread_mutex_lock(&(philo->mutex));
 	philo->fork = 1;
-	printf("%i takes fork %i\n", philo->id, philo->id);
+	printf("%u %i takes fork %i\n", philo->monit->time, philo->id, philo->id);
 	if (!(philo->id % 2))
 	{
 		pthread_mutex_lock(&(philo->monit->philo[next]->mutex));
 		philo->monit->philo[next]->fork = 1;
-		printf("%i takes fork %i\n", philo->id, next);
+		printf("%u %i takes fork %i\n", philo->monit->time,  philo->id, next);
 	}
 }
 
@@ -52,9 +52,19 @@ void	*philosopher(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	grab_forks(philo);
-	usleep(500000);
-	release_forks(philo);
+	while (1)
+	{
+		grab_forks(philo);
+		ph->state = EAT;
+		usleep(ph->monit->time_eat * 1000);
+		release_forks(philo);
+		(ph->eat)++;
+		if (ph->monit->total_eat > 0 && ph->eat == ph->monit->total_eat)
+			break ;
+		ph->state = SLEEP;
+		usleep(ph->monit->time_sleep * 1000);
+		ph->state = THINK;
+	}
 	printf("I am %i\n", ph->id);
 	return (NULL);
 }

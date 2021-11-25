@@ -6,14 +6,11 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:49:54 by bmans         #+#    #+#                 */
-/*   Updated: 2021/10/13 12:58:59 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/25 14:23:59 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <string.h>
 
 static void	cleanup_monit(t_monit *monit)
@@ -38,14 +35,13 @@ static void	start_threads(t_monit *monit)
 	UINT i;
 
 	i = monit->n_philo;
-	pthread_create(&(monit->monit_thr), NULL, monitor, monit);
 	while (i > 0)
 	{
 		i--;
 		pthread_create(&(monit->philo[i]->philo_thr), \
 			NULL, philosopher, monit->philo[i]);
 	}
-	pthread_join(monit->monit_thr, NULL);
+	monitor(monit);
 }
 
 static void	init_monit(t_monit *monit, char **args)

@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/10/11 13:17:58 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/25 14:19:06 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #  define UINT unsigned int
 # endif
 # include <pthread.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
 
 typedef enum e_state
 {
