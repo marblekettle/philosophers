@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:56:02 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/25 14:41:52 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 10:01:02 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	grab_forks(t_philo *philo)
 	{
 		pthread_mutex_lock(&(philo->monit->philo[next]->mutex));
 		philo->monit->philo[next]->fork = 1;
-		printf("%u %i takes fork %i\n", philo->monit->time,  philo->id, next);
+		printf("%u %i takes fork %i\n", philo->monit->time, philo->id, next);
 	}
 }
 
@@ -56,13 +56,17 @@ void	*philosopher(void *philo)
 	{
 		grab_forks(philo);
 		ph->state = EAT;
+		ph->last_eat = ph->monit->time;
+		printf("%u %i is eating\n", ph->monit->time, ph->id);
 		usleep(ph->monit->time_eat * 1000);
 		release_forks(philo);
 		(ph->eat)++;
 		if (ph->monit->total_eat > 0 && ph->eat == ph->monit->total_eat)
 			break ;
+		printf("%u %i is sleeping\n", ph->monit->time, ph->id);
 		ph->state = SLEEP;
 		usleep(ph->monit->time_sleep * 1000);
+		printf("%u %i woke up\n", ph->monit->time, ph->id);
 		ph->state = THINK;
 	}
 	printf("I am %i\n", ph->id);

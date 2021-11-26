@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:49:54 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/25 14:23:59 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 10:03:49 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	cleanup_monit(t_monit *monit)
 
 static void	start_threads(t_monit *monit)
 {
-	UINT i;
+	UINT	i;
 
 	i = monit->n_philo;
 	while (i > 0)
@@ -68,6 +68,7 @@ static void	init_monit(t_monit *monit, char **args)
 		i++;
 	}
 	start_threads(monit);
+	cleanup_monit(monit);
 }
 
 int	main(int ac, char **av)
@@ -91,7 +92,6 @@ int	main(int ac, char **av)
 		if (ac == 6)
 			monit.total_eat = atoui(av[5]);
 		init_monit(&monit, av);
-		cleanup_monit(&monit);
 	}
 	else
 		printf("%s %s %s\n", "Format: ./philo number_of_philosophers", \

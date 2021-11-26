@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/25 14:19:06 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 09:29:32 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philo
 	pthread_mutex_t	mutex;
 	struct s_monit	*monit;
 	UINT			eat;
+	UINT			last_eat;
 }					t_philo;
 
 typedef struct s_monit
