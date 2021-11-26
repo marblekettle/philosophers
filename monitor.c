@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:53:37 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 09:57:49 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 11:20:02 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*stop_sim(t_monit *monit, UINT dead)
 		pthread_detach(monit->philo[i]->philo_thr);
 		i++;
 	}
-	printf("%u %i starved to death :(\n", monit->time, dead);
+	printf("%u %i died\n", monit->time, dead);
 	return (NULL);
 }
 
@@ -37,7 +37,7 @@ void	*timer(void *monit)
 	mo = (t_monit *)monit;
 	gettimeofday(&start, NULL);
 	while (1)
-	{
+	{	
 		gettimeofday(&now, NULL);
 		mo->time = (now.tv_sec * 1000) + (now.tv_usec / 1000) \
 			- (start.tv_sec * 1000) - (start.tv_usec / 1000);

@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:56:02 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 10:01:02 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 11:51:57 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	*philosopher(void *philo)
 		printf("%u %i is sleeping\n", ph->monit->time, ph->id);
 		ph->state = SLEEP;
 		usleep(ph->monit->time_sleep * 1000);
-		printf("%u %i woke up\n", ph->monit->time, ph->id);
+		printf("%u %i is thinking\n", ph->monit->time, ph->id);
 		ph->state = THINK;
 	}
 	printf("I am %i\n", ph->id);

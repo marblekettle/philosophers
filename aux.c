@@ -6,9 +6,11 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:59:12 by bmans         #+#    #+#                 */
-/*   Updated: 2021/09/29 14:17:47 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 11:51:33 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 static char	is_num(const char c)
 {
