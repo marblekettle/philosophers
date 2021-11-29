@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:56:02 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 11:51:57 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/29 10:25:14 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	*philosopher(void *philo)
 	t_philo	*ph;
 
 	ph = (t_philo *)philo;
-	while (1)
+	while (ph->state != DEAD)
 	{
 		grab_forks(philo);
 		ph->state = EAT;
@@ -69,6 +69,5 @@ void	*philosopher(void *philo)
 		printf("%u %i is thinking\n", ph->monit->time, ph->id);
 		ph->state = THINK;
 	}
-	printf("I am %i\n", ph->id);
 	return (NULL);
 }

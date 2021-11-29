@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 11:46:00 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 11:53:40 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,5 @@ void	*monitor(void *monit);
 
 char	is_numeric(const char *str);
 UINT	atoui(const char *str);
-void	print_stamp(UINT time, UINT id, const char *message);
 
 #endif

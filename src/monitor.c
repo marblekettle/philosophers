@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:53:37 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 11:20:02 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/29 10:25:42 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	*stop_sim(t_monit *monit, UINT dead)
 	i = 0;
 	while (i < monit->n_philo)
 	{
+		monit->philo[i]->state = DEAD; 
 		pthread_detach(monit->philo[i]->philo_thr);
 		i++;
 	}
@@ -65,6 +66,5 @@ void	*monitor(void *monit)
 		pthread_join(mo->philo[i]->philo_thr, NULL);
 		i++;
 	}
-	printf("All threads done.\n");
 	return (NULL);
 }
