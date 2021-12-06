@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 11:53:40 by bmans         ########   odam.nl         */
+/*   Updated: 2021/12/06 14:02:50 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_philo
 
 typedef struct s_monit
 {
+	unsigned char	start;
 	pthread_t		monit_thr;
 	t_philo			**philo;
 	UINT			n_philo;
