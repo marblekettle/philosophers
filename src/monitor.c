@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:53:37 by bmans         #+#    #+#                 */
-/*   Updated: 2021/12/06 15:01:19 by bmans         ########   odam.nl         */
+/*   Updated: 2021/12/07 13:39:12 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ void	*timer(void *monit)
 	while (1)
 	{	
 		gettimeofday(&now, NULL);
+		pthread_mutex_lock(&(mo->mutex));
 		mo->time = (now.tv_sec * 1000) + (now.tv_usec / 1000) \
 			- (start.tv_sec * 1000) - (start.tv_usec / 1000);
+		pthread_mutex_unlock(&(mo->mutex));
 		i = 0;
 		tally = 0;
 		while (i < mo->n_philo)

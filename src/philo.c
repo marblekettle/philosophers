@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:49:54 by bmans         #+#    #+#                 */
-/*   Updated: 2021/11/26 11:13:18 by bmans         ########   odam.nl         */
+/*   Updated: 2021/12/07 13:38:26 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static void	start_threads(t_monit *monit)
 	UINT	i;
 
 	i = monit->n_philo;
+	monit->time = 0;
+	pthread_mutex_init(&(monit->mutex), NULL);
 	while (i > 0)
 	{
 		i--;
