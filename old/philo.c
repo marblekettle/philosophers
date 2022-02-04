@@ -5,47 +5,55 @@
 /*                                                     +:+                    */
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/04 11:08:21 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/04 14:23:49 by bmans         ########   odam.nl         */
+/*   Created: 2021/09/29 11:49:54 by bmans         #+#    #+#                 */
+/*   Updated: 2021/12/07 13:38:26 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <string.h>
 
-void	cleanup(t_monit *monit)
+static void	cleanup_monit(t_monit *monit)
 {
 	UINT	i;
 
-	i = 0;
-	while (i < monit->n_philo)
-	{
-		if (monit->philo && monit->philo[i])
-		{
-//			pthread_mutex_destroy(&monit->philo[i]->mutex);
-			free(monit->philo[i]);
-		}
-		if (monit->reaper && monit->reaper[i])
-		{
-//			pthread_mutex_destroy(&monit->reaper[i]->mutex);
-			free(monit->reaper[i]);
-		}
-		i++;
-	}
 	if (monit->philo)
+	{
+		i = 0;
+		while (i < monit->n_philo)
+		{
+			if (monit->philo[i])
+				free(monit->philo[i]);
+			i++;
+		}
 		free(monit->philo);
-	if (monit->reaper)
-		free(monit->reaper);
+	}
 }
 
-void	init_monit(t_monit *monit, char **av)
+static void	start_threads(t_monit *monit)
 {
 	UINT	i;
 
-	monit->n_philo = atoui(av[1]);
-	monit->time_die = atoui(av[2]);
-	monit->time_eat = atoui(av[3]);
-	monit->time_sleep = atoui(av[4]);
+	i = monit->n_philo;
+	monit->time = 0;
+	pthread_mutex_init(&(monit->mutex), NULL);
+	while (i > 0)
+	{
+		i--;
+		pthread_create(&(monit->philo[i]->philo_thr), \
+			NULL, philosopher, monit->philo[i]);
+	}
+	monitor(monit);
+}
+
+static void	init_monit(t_monit *monit, char **args)
+{
+	UINT	i;
+
+	monit->n_philo = atoui(args[1]);
+	monit->time_die = atoui(args[2]);
+	monit->time_eat = atoui(args[3]);
+	monit->time_sleep = atoui(args[4]);
 	monit->philo = (t_philo **)malloc(sizeof(void *) * monit->n_philo);
 	if (!monit->philo)
 		return ;
@@ -55,8 +63,14 @@ void	init_monit(t_monit *monit, char **av)
 		monit->philo[i] = malloc(sizeof(t_philo));
 		if (!monit->philo[i])
 			return ;
+		memset(monit->philo[i], 0, sizeof(t_philo));
+		monit->philo[i]->monit = monit;
+		monit->philo[i]->id = i;
+		pthread_mutex_init(&(monit->philo[i]->mutex), NULL);
 		i++;
 	}
+	start_threads(monit);
+	cleanup_monit(monit);
 }
 
 int	main(int ac, char **av)
@@ -80,9 +94,10 @@ int	main(int ac, char **av)
 		if (ac == 6)
 			monit.total_eat = atoui(av[5]);
 		init_monit(&monit, av);
-		cleanup(&monit);
 	}
 	else
-		help_message();
+		printf("%s %s %s\n", "Format: ./philo number_of_philosophers", \
+			"time_to_die time_to_eat time_to_sleep [number of", \
+			"times_each_philosopher_must_eat]");
 	return (0);
 }
