@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:59:12 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/04 14:21:09 by bmans         ########   odam.nl         */
+/*   Updated: 2021/11/26 11:51:33 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,4 @@ unsigned int	atoui(const char *str)
 		i++;
 	}
 	return (out);
-}
-
-void	help_message(void)
-{
-	printf("%s%s%s\n", "Format: ./philo number_of_philosophers ", \
-		"time_to_die time_to_eat time_to_sleep [number_of", \
-		"times_each_philosopher_must_eat]");
 }
