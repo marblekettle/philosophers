@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/04 14:16:56 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/07 13:06:59 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ typedef struct s_philo
 	pthread_t		philo_thr;
 	UINT			id;
 	t_state			state;
-	unsigned char	fork;
-	unsigned char	*next_fork;
+	unsigned char	fork;		//Written by philo
+	unsigned char	*next_fork;	//Written by philo
 	pthread_mutex_t	mutex;
 	pthread_mutex_t *next_mutex;
 	struct s_monit	*monit;
 	UINT			eat;
-	UINT			last_eat;
+	UINT			last_eat;	//Written by reaper
 }					t_philo;
 
 typedef struct s_reaper
@@ -55,7 +55,7 @@ typedef struct s_reaper
 	pthread_t		reaper_thr;
 	pthread_mutex_t	mutex;
 	char			dead;
-	UINT			time;
+	UINT			time;	//Written by monit
 }					t_reaper;
 
 typedef struct s_monit
@@ -78,5 +78,6 @@ void	*monitor(void *monit);
 char	is_numeric(const char *str);
 UINT	atoui(const char *str);
 void	help_message(void);
+void	init_monit(t_monit *monit, char **av);
 
 #endif

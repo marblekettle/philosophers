@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/04 11:08:21 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/04 14:23:49 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/07 11:47:27 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	cleanup(t_monit *monit)
 	{
 		if (monit->philo && monit->philo[i])
 		{
-//			pthread_mutex_destroy(&monit->philo[i]->mutex);
+			pthread_mutex_destroy(&monit->philo[i]->mutex);
 			free(monit->philo[i]);
 		}
 		if (monit->reaper && monit->reaper[i])
 		{
-//			pthread_mutex_destroy(&monit->reaper[i]->mutex);
+			pthread_mutex_destroy(&monit->reaper[i]->mutex);
 			free(monit->reaper[i]);
 		}
 		i++;
@@ -36,27 +36,6 @@ void	cleanup(t_monit *monit)
 		free(monit->philo);
 	if (monit->reaper)
 		free(monit->reaper);
-}
-
-void	init_monit(t_monit *monit, char **av)
-{
-	UINT	i;
-
-	monit->n_philo = atoui(av[1]);
-	monit->time_die = atoui(av[2]);
-	monit->time_eat = atoui(av[3]);
-	monit->time_sleep = atoui(av[4]);
-	monit->philo = (t_philo **)malloc(sizeof(void *) * monit->n_philo);
-	if (!monit->philo)
-		return ;
-	i = 0;
-	while (i < monit->n_philo)
-	{
-		monit->philo[i] = malloc(sizeof(t_philo));
-		if (!monit->philo[i])
-			return ;
-		i++;
-	}
 }
 
 int	main(int ac, char **av)

@@ -6,12 +6,12 @@
 #    By: bmans <marvin@codam.nl>                      +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/09/23 16:09:13 by bmans         #+#    #+#                  #
-#    Updated: 2022/02/04 13:41:48 by bmans         ########   odam.nl          #
+#    Updated: 2022/02/07 11:47:43 by bmans         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-SRC = philo.c aux.c #philosoph.c monitor.c
+SRC = philo.c aux.c init.c #philosoph.c monitor.c
 SRC_DIR = src
 HEADER = philo.h
 HEADER_DIR = includes
