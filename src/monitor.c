@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:53:37 by bmans         #+#    #+#                 */
-/*   Updated: 2021/12/07 13:39:12 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/07 14:13:13 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,21 @@ void	*stop_sim(t_monit *monit, UINT dead)
 	UINT	i;
 
 	i = 0;
+	monit->any_dead = 1;
 	while (i < monit->n_philo)
 	{
+		pthread_mutex_lock(&(monit->philo[i]->mutex));
 		monit->philo[i]->state = DEAD;
-		pthread_detach(monit->philo[i]->philo_thr);
 		i++;
 	}
 	printf("%u %i died\n", monit->time, dead);
+	i = 0;
+	while (i < monit->n_philo)
+	{
+		pthread_mutex_unlock(&(monit->philo[i]->mutex));
+		pthread_join(monit->philo[i]->philo_thr, NULL);
+		i++;
+	}
 	return (NULL);
 }
 
@@ -57,6 +65,7 @@ void	*timer(void *monit)
 		}
 		if (tally == mo->n_philo)
 			return (NULL);
+		usleep(500);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 10:44:22 by bmans         #+#    #+#                 */
-/*   Updated: 2021/12/07 13:32:22 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/07 14:04:30 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,23 @@ typedef struct s_philo
 {
 	pthread_t		philo_thr;
 	UINT			id;
-	t_state			state;
-	unsigned char	fork;
+	t_state			state;		//Written by philo, read by monit
+	unsigned char	fork;		//Written by philo
 	pthread_mutex_t	mutex;
 	struct s_monit	*monit;
-	UINT			eat;
-	UINT			last_eat;
+	UINT			eat;		//Written by philo
+	UINT			last_eat;	//Written by philo
 }					t_philo;
 
 typedef struct s_monit
 {
 	unsigned char	start;
+	char			any_dead;
 	pthread_t		monit_thr;
 	pthread_mutex_t	mutex;
 	t_philo			**philo;
 	UINT			n_philo;
-	UINT			time;
+	UINT			time;		//Written by monit, read by philo
 	UINT			time_die;
 	UINT			time_eat;
 	UINT			time_sleep;
