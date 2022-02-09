@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/11 11:53:37 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/07 14:13:13 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/09 09:55:05 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ void	*timer(void *monit)
 		tally = 0;
 		while (i < mo->n_philo)
 		{
+			pthread_mutex_lock(&(mo->philo[i]->mutex));
 			if (mo->total_eat && mo->philo[i]->eat >= mo->total_eat)
 				tally++;
 			if (mo->philo[i]->last_eat + mo->time_die < mo->time)
 				return (stop_sim(mo, i));
+			pthread_mutex_unlock(&(mo->philo[i]->mutex));
 			i++;
 		}
 		if (tally == mo->n_philo)

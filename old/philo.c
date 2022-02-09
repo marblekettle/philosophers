@@ -6,14 +6,14 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:49:54 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/09 15:40:41 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/09 13:52:58 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <string.h>
 
-static void	cleanup(t_monit *monit)
+static void	cleanup_monit(t_monit *monit)
 {
 	UINT	i;
 
@@ -23,16 +23,11 @@ static void	cleanup(t_monit *monit)
 		while (i < monit->n_philo)
 		{
 			if (monit->philo[i])
-			{
-				pthread_mutex_destroy(&(monit->philo[i]->mutex));
-				pthread_mutex_destroy(&(monit->philo[i]->f_mutex));
 				free(monit->philo[i]);
-			}
 			i++;
 		}
 		free(monit->philo);
 	}
-	pthread_mutex_destroy(&(monit->mutex));
 }
 
 static void	start_threads(t_monit *monit)
@@ -40,31 +35,18 @@ static void	start_threads(t_monit *monit)
 	UINT	i;
 
 	i = monit->n_philo;
+	monit->time = 0;
+	pthread_mutex_init(&(monit->mutex), NULL);
 	while (i > 0)
 	{
 		i--;
-//		pthread_create(&(monit->philo[i]->philo_thr), \
-//			NULL, philosopher, monit->philo[i]);
+		pthread_create(&(monit->philo[i]->philo_thr), \
+			NULL, philosopher, monit->philo[i]);
 	}
-//	monitor(monit);
+	monitor(monit);
 }
 
-static char	init_philo(t_philo **philo, t_monit *monit, UINT id)
-{
-	*philo = malloc(sizeof(t_philo));
-	if (!*philo)
-		return (error_message("Malloc fail"));
-	memset(*philo, 0, sizeof(t_philo));
-	(*philo)->monit = monit;
-	(*philo)->id = id;
-	if (pthread_mutex_init(&((*philo)->mutex), NULL))
-		return (error_message("Mutex init fail"));
-	if (pthread_mutex_init(&((*philo)->f_mutex), NULL))
-		return (error_message("Mutex init fail"));
-	return (1);
-}
-
-static char	init_monit(t_monit *monit, char **args)
+static void	init_monit(t_monit *monit, char **args)
 {
 	UINT	i;
 
@@ -74,18 +56,22 @@ static char	init_monit(t_monit *monit, char **args)
 	monit->time_sleep = atoui(args[4]);
 	monit->philo = (t_philo **)malloc(sizeof(void *) * monit->n_philo);
 	if (!monit->philo)
-		return (error_message("Malloc fail"));
-	if (pthread_mutex_init(&(monit->mutex), NULL))
-		return (error_message("Mutex init fail"));
+		return ;
 	i = 0;
 	while (i < monit->n_philo)
 	{
-		if (!init_philo(&(monit->philo[i]), monit, i))
-			return (0);
+		monit->philo[i] = malloc(sizeof(t_philo));
+		if (!monit->philo[i])
+			return ;
+		memset(monit->philo[i], 0, sizeof(t_philo));
+		monit->philo[i]->monit = monit;
+		monit->philo[i]->id = i;
+		if (pthread_mutex_init(&(monit->philo[i]->mutex), NULL))
+			return ;
 		i++;
 	}
 	start_threads(monit);
-	return (0);
+	cleanup_monit(monit);
 }
 
 int	main(int ac, char **av)
@@ -100,7 +86,7 @@ int	main(int ac, char **av)
 		{
 			if (!is_numeric(av[i]))
 			{
-				printf("Invalid arguments!\n");
+				write(2, "Invalid arguments!\n", 19);
 				return (0);
 			}
 			i++;
@@ -109,9 +95,10 @@ int	main(int ac, char **av)
 		if (ac == 6)
 			monit.total_eat = atoui(av[5]);
 		init_monit(&monit, av);
-		cleanup(&monit);
 	}
 	else
-		help_message();
+		printf("%s %s %s\n", "Format: ./philo number_of_philosophers", \
+			"time_to_die time_to_eat time_to_sleep [number of", \
+			"times_each_philosopher_must_eat]");
 	return (0);
 }
