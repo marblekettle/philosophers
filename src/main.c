@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/10 11:27:26 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/10 16:17:44 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/11 10:36:19 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	start_threads(t_monit *monit)
 	while (i > 0)
 	{
 		i--;
-		pthread_create(&(monit->philo[i]->philo_thr), 
+		pthread_create(&(monit->philo[i]->philo_thr), \
 			NULL, philo_loop, monit->philo[i]);
 	}
 	monitor(monit);
@@ -62,6 +62,8 @@ static char	init_philo(t_philo **philo, t_monit *monit, UINT id)
 		return (error_message("Mutex init fail"));
 	if (pthread_mutex_init(&((*philo)->f_mutex), NULL))
 		return (error_message("Mutex init fail"));
+	if (id >= 1)
+		monit->philo[id - 1]->next = *philo;
 	return (1);
 }
 
@@ -85,12 +87,7 @@ static char	init_monit(t_monit *monit, char **args)
 			return (0);
 		i++;
 	}
-	i = 0;
-	while (i < monit->n_philo)
-	{
-		monit->philo[i]->next = monit->philo[(i + 1) % monit->n_philo];
-		i++;
-	}
+	monit->philo[monit->n_philo - 1]->next = monit->philo[0];
 	start_threads(monit);
 	return (0);
 }

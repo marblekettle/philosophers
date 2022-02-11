@@ -6,7 +6,7 @@
 #    By: bmans <marvin@codam.nl>                      +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/09/23 16:09:13 by bmans         #+#    #+#                  #
-#    Updated: 2022/02/10 17:06:21 by bmans         ########   odam.nl          #
+#    Updated: 2022/02/11 11:48:12 by bmans         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC_DIR = src
 HEADER = philo.h
 HEADER_DIR = includes
 CC = gcc
-FLAGS = -Wall -Werror -Wextra -fsanitize=thread
+FLAGS = -Wall -Werror -Wextra #-fsanitize=thread
 
 $(NAME): $(addprefix $(SRC_DIR)/,$(SRC)) $(addprefix $(HEADER_DIR)/,$(HEADER))
 	$(CC) $(FLAGS) -I$(HEADER_DIR) $(addprefix $(SRC_DIR)/,$(SRC)) -o $(NAME)

@@ -6,13 +6,13 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/09/29 11:59:12 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/09 15:26:58 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/11 10:34:06 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-char error_message(char *msg)
+char	error_message(char *msg)
 {
 	printf("Error: %s\n", msg);
 	return (0);
