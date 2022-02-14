@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/10 11:27:45 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/11 11:44:35 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/14 15:14:30 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static char	eat(t_philo *philo)
 	pthread_mutex_lock(&(philo->next->f_mutex));
 	philo->next->fork = 1;
 	time_message(philo, "takes a fork", 0);
-	pthread_mutex_lock(&(philo->monit->mutex));
 	pthread_mutex_lock(&(philo->mutex));
+	pthread_mutex_lock(&(philo->monit->mutex));
 	philo->last_eat = philo->monit->time;
 	philo->eat++;
 	if (philo->eat == philo->monit->total_eat)
@@ -68,7 +68,14 @@ void	*philo_loop(void *philo)
 		usleep(5000);
 	while (!check_stop(ph))
 	{
-		if (eat(ph))
+		pthread_mutex_lock(&(ph->mutex));
+		pthread_mutex_unlock(&(ph->mutex));
+		while (ph->next == ph)
+		{
+			if (check_stop(ph))
+				return (NULL);
+		}
+		if (check_stop(ph) || eat(ph))
 			break ;
 		time_message(ph, "is sleeping", 0);
 		usleep(1000 * ph->monit->time_sleep);

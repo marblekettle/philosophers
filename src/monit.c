@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/10 15:28:21 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/11 11:38:45 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/14 15:14:37 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static char	loop_check(t_monit *monit, UINT *has_died)
 		if (monit->time - monit->philo[i]->last_eat > monit->time_die)
 		{
 			*has_died = i;
+			pthread_mutex_unlock(&(monit->philo[i]->mutex));
 			return (2);
 		}
 		if (!monit->philo[i]->eat_fin)
@@ -77,7 +78,14 @@ void	monitor(t_monit *monit)
 	i = 0;
 	while (i < monit->n_philo)
 	{
+		printf("%u %i\n", i, pthread_mutex_trylock(&(monit->philo[i]->mutex)));
+		i++;
+	}
+	i = 0;
+	while (i < monit->n_philo)
+	{
 		pthread_join(monit->philo[i]->philo_thr, NULL);
+		printf("%u\n", i);
 		i++;
 	}
 	return ;
