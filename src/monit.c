@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/10 15:28:21 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/14 15:14:37 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/16 13:39:33 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	loop_check(t_monit *monit, UINT *has_died)
 	char	all_eat;
 
 	i = 0;
-	all_eat = 1;
+	all_eat = (monit->total_eat > 0);
 	while (i < monit->n_philo)
 	{
 		pthread_mutex_lock(&(monit->philo[i]->mutex));
@@ -29,7 +29,7 @@ static char	loop_check(t_monit *monit, UINT *has_died)
 			pthread_mutex_unlock(&(monit->philo[i]->mutex));
 			return (2);
 		}
-		if (!monit->philo[i]->eat_fin)
+		if (monit->total_eat && !monit->philo[i]->eat_fin)
 			all_eat = 0;
 		pthread_mutex_unlock(&(monit->philo[i]->mutex));
 		i++;
@@ -78,14 +78,7 @@ void	monitor(t_monit *monit)
 	i = 0;
 	while (i < monit->n_philo)
 	{
-		printf("%u %i\n", i, pthread_mutex_trylock(&(monit->philo[i]->mutex)));
-		i++;
-	}
-	i = 0;
-	while (i < monit->n_philo)
-	{
 		pthread_join(monit->philo[i]->philo_thr, NULL);
-		printf("%u\n", i);
 		i++;
 	}
 	return ;

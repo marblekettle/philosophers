@@ -6,7 +6,7 @@
 /*   By: bmans <bmans@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/10 11:27:45 by bmans         #+#    #+#                 */
-/*   Updated: 2022/02/14 15:14:30 by bmans         ########   odam.nl         */
+/*   Updated: 2022/02/16 14:00:29 by bmans         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,18 @@ static char	eat(t_philo *philo)
 	philo->fork = 1;
 	time_message(philo, "takes a fork", 0);
 	pthread_mutex_lock(&(philo->next->f_mutex));
-	philo->next->fork = 1;
 	time_message(philo, "takes a fork", 0);
-	pthread_mutex_lock(&(philo->mutex));
 	pthread_mutex_lock(&(philo->monit->mutex));
+	pthread_mutex_lock(&(philo->mutex));
 	philo->last_eat = philo->monit->time;
 	philo->eat++;
-	if (philo->eat == philo->monit->total_eat)
+	if (philo->monit->total_eat && philo->eat == philo->monit->total_eat)
 		philo->eat_fin = 1;
 	pthread_mutex_unlock(&(philo->mutex));
 	pthread_mutex_unlock(&(philo->monit->mutex));
-	if (philo->eat > philo->monit->total_eat)
-		philo->eat_fin = 1;
 	time_message(philo, "is eating", 0);
 	usleep(1000 * philo->monit->time_eat);
 	philo->fork = 0;
-	philo->next->fork = 0;
 	pthread_mutex_unlock(&(philo->f_mutex));
 	pthread_mutex_unlock(&(philo->next->f_mutex));
 	return (check_stop(philo));
